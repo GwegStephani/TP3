@@ -9,9 +9,11 @@ public class HeadsetCollision : MonoBehaviour {
     [Tooltip("The VRTK Headset Collision script to use when determining headset collisions. If this is left blank then the script will need to be applied to the same GameObject.")]
     public VRTK_HeadsetCollision headsetCollision;
 
+    private PlayerController playerController;
+
 	// Use this for initialization
 	void Start () {
-		
+        playerController = GameObject.Find("VRTKScripts").GetComponent<PlayerController>();
 	}
 
     protected virtual void OnEnable() {
@@ -31,9 +33,16 @@ public class HeadsetCollision : MonoBehaviour {
 		
 	}
 
+    private void HandlGoalHit() {
+        playerController.IncreaseCheckpoint();
+        HandleResetHit();
+    }
+
     private void HandleResetHit() {
+
         // get start object
-        GameObject startObject = GameObject.Find("Start");
+        GameObject startObject = GameObject.Find(playerController.GetCurrentCheckpoint());
+        Debug.Log(playerController.GetCurrentCheckpoint());
 
         // get start location
         Vector3 startLocation = startObject.transform.position;
